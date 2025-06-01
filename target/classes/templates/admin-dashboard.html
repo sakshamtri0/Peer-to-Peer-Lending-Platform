@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Command Center</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            display: block;
+            pointer-events: none;
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        .particle:nth-child(1) { left: 20%; animation-delay: 0s; animation-duration: 35s; }
+        .particle:nth-child(2) { left: 40%; animation-delay: 2s; animation-duration: 25s; }
+        .particle:nth-child(3) { left: 60%; animation-delay: 4s; animation-duration: 30s; }
+        .particle:nth-child(4) { left: 80%; animation-delay: 6s; animation-duration: 20s; }
+        .particle:nth-child(5) { left: 10%; animation-delay: 8s; animation-duration: 40s; }
+
+        @keyframes float {
+            0% { opacity: 0; transform: translateY(100vh) rotate(0deg); }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-100vh) rotate(360deg); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: slideInDown 1s ease-out;
+        }
+
+        .dashboard-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #fff, #f0f8ff, #e6e6fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+            margin-bottom: 10px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3)); }
+            to { filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.6)); }
+        }
+
+        .welcome-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .welcome-text {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .role-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .functions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .function-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .function-card:nth-child(2) { animation-delay: 0.8s; }
+        .function-card:nth-child(3) { animation-delay: 1s; }
+
+        .function-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.8s;
+        }
+
+        .function-card:hover::before {
+            left: 100%;
+        }
+
+        .function-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .function-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .function-card:hover .function-icon {
+            animation-duration: 0.5s;
+        }
+
+        .function-title {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .function-description {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .function-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .function-link:hover {
+            background: linear-gradient(45deg, #764ba2, #667eea);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .logout-section {
+            animation: fadeInUp 1s ease-out 1.2s both;
+        }
+
+        .logout-btn {
+            background: linear-gradient(45deg, #ff4757, #ff3838);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logout-btn:hover {
+            background: linear-gradient(45deg, #ff3838, #ff4757);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 71, 87, 0.6);
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .dashboard-title {
+                font-size: 2.5rem;
+            }
+            .functions-grid {
+                grid-template-columns: 1fr;
+            }
+            .function-card {
+                padding: 30px 20px;
+            }
+        }
+
+        /* Stats counter animation */
+        .stats-counter {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .counter-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4facfe;
+            animation: countUp 2s ease-out;
+        }
+
+        @keyframes countUp {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Particles -->
+    <div class="particles">
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+    </div>
+
+    <div class="container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">
+                <i class="fas fa-crown"></i> ADMIN COMMAND CENTER
+            </h1>
+        </div>
+
+        <div class="welcome-section">
+            <p class="welcome-text" th:text="'🎉 Welcome back, ' + ${username} + '!'">🎉 Welcome back, Admin!</p>
+            <div class="role-badge" th:text="${role}">Administrator</div>
+            
+            <div class="stats-counter">
+                <div class="counter-number">1,247</div>
+                <div style="color: rgba(255,255,255,0.8);">Total System Operations</div>
+            </div>
+        </div>
+
+        <div class="functions-grid">
+            <div class="function-card">
+                <div class="function-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="function-title">Loan Analytics</h3>
+                <p class="function-description">Monitor all loan applications with real-time insights and advanced analytics dashboard</p>
+                <a href="/" class="function-link">
+                    <i class="fas fa-rocket"></i> Launch Dashboard
+                </a>
+            </div>
+
+            <div class="function-card">
+                <div class="function-icon">
+                    <i class="fas fa-users-cog"></i>
+                </div>
+                <h3 class="function-title">User Management</h3>
+                <p class="function-description">Control user access, permissions, and manage the entire user ecosystem</p>
+                <a href="/admin/users" class="function-link">
+                    <i class="fas fa-cog"></i> Manage Users
+                </a>
+            </div>
+
+            <div class="function-card">
+                <div class="function-icon">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <h3 class="function-title">Advanced Reports</h3>
+                <p class="function-description">Generate comprehensive reports with beautiful visualizations and data insights</p>
+                <a href="/admin/reports" class="function-link">
+                    <i class="fas fa-magic"></i> View Reports
+                </a>
+            </div>
+        </div>
+
+        <div class="logout-section">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Secure Logout
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Counter animation
+            const counter = document.querySelector('.counter-number');
+            const target = 1247;
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                counter.textContent = Math.floor(current).toLocaleString();
+            }, 20);
+
+            // Add hover sound effect simulation
+            const cards = document.querySelectorAll('.function-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 25px 50px rgba(255, 255, 255, 0.2)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '';
+                });
+            });
+
+            // Particle interaction
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(particle => {
+                particle.addEventListener('animationiteration', function() {
+                    this.style.left = Math.random() * 100 + '%';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

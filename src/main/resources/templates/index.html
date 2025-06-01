@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Peer-to-Peer Lending Platform</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Welcome to LendConnect</h1>
+    <p>Borrow and lend money directly, securely, and efficiently.</p>
+    <form th:action="@{/apply}" method="post">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="number" step="0.01" name="amount" placeholder="Amount to Borrow (₹)" required>
+        <input type="submit" value="Apply for Loan">
+    </form>
+    <h2>Loan Applications</h2>
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Amount (₹)</th>
+        </tr>
+        <tr th:each="app : ${applications}">
+            <td th:text="${app.name}"></td>
+            <td th:text="${app.amount}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

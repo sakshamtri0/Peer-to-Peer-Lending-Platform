@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Application Submitted</title>
+</head>
+<body>
+    <h2 th:text="'Thank you, ' + ${name} + '!'"></h2>
+    <p th:text="'You have applied for a loan of ₹' + ${amount} + '.'"></p>
+    <p>We’ll connect you with a potential lender shortly.</p>
+    <a href="/">Back to Home</a>
+</body>
+</html>

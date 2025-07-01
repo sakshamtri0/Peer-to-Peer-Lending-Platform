@@ -1,28 +1,94 @@
-# Peer-to-Peer Lending Platform
+# 💸 Peer-to-Peer Lending Platform
 
-This repository contains a web-based peer-to-peer lending platform that connects borrowers with individual lenders. Users can register as either lenders or borrowers, browse loan requests or offers, and complete lending transactions securely.
+A full-stack Peer-to-Peer Lending Platform where users can request or offer loans, automate agreements, track payments, and manage lending/borrowing seamlessly.
 
-## 🔍 Features
+---
 
-- User authentication and role-based access
-- Borrowers can post loan requests
-- Lenders can view and fund loan requests
-- Admin dashboard for monitoring transactions and users
-- Loan tracking and repayment status
-- Frontend and backend fully integrated
+## 📌 Table of Contents
 
-## 🛠️ Technologies Used
+- [🔧 Features](#-features)
+- [📸 Screenshots](#-screenshots)
+- [⚙️ Technologies Used](#️-technologies-used)
+- [🚀 Installation & Setup](#-installation--setup)
+- [🧪 Usage](#-usage)
+- [📁 Project Structure](#-project-structure)
+- [🛡️ License](#️-license)
 
-- **Frontend:** HTML, CSS, JavaScript, Bootstrap
-- **Backend:** Python (Flask)
-- **Database:** SQLite
-- **Other:** Jinja2 Templating, Flask-WTF (Forms), SQLAlchemy (ORM)
+---
 
-## 🧠 Model Information
+## 🔧 Features
 
-> This project does not include machine learning models but implements a structured business logic model for handling users, loans, and transactions via SQLAlchemy ORM.
+- 👤 User authentication & authorization
+- 💼 Borrower and Lender dashboards
+- 📄 Loan request and offer management
+- ✅ Admin approval for loan requests
+- 💳 EMI Payment Tracking
+- 📊 Loan history and analytics
+- ✉️ Notifications via email (optional)
 
-- **User Roles:** Lender, Borrower, Admin
-- **Loan Status Flow:** Requested → Funded → Repaid
-- **Security:** Input validation, session management using Flask
+---
 
+## ⚙️ Technologies Used
+
+### 💻 Frontend:
+- HTML5, CSS3
+- JavaScript
+- Bootstrap
+
+### 🔙 Backend:
+- PHP
+- MySQL
+
+### 📦 Others:
+- XAMPP/WAMP (Local server)
+- PHPMyAdmin for database
+
+---
+
+## 🚀 Installation & Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/Peer-to-Peer-Lending-Platform.git
+   ```
+
+2. **Move project to your server directory:**
+   - For XAMPP: htdocs/
+   - For WAMP: www/
+
+3. **Set up the database:**
+   - Open phpMyAdmin
+   - Create a new database (e.g., p2p_lending)
+   - Import the database.sql file located in the root of the project
+
+4. **Configure database connection:**
+   - Edit the database configuration file (e.g., config.php) with your DB credentials.
+
+5. **Run the application:**
+   - Go to http://localhost/Peer-to-Peer-Lending-Platform
+
+---
+
+## 📁 Project Structure
+```
+Peer-to-Peer-Lending-Platform/
+│
+├── admin/                 # Admin dashboard
+├── borrower/              # Borrower dashboard
+├── lender/                # Lender dashboard
+├── css/                   # Stylesheets
+├── js/                    # JavaScript files
+├── database.sql           # MySQL database file
+├── config.php             # DB config
+└── index.php              # Landing page
+```
+
+---
+
+## 🧪 Usage
+
+- Register/Login as a lender or borrower
+- Borrower: Submit a loan request
+- Lender: View and approve/decline requests
+- Admin: Manage users and loan approvals
+- Users: Track EMI payments and history
